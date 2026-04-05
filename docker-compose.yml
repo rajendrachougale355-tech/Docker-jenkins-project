@@ -1,0 +1,24 @@
+services:
+  web-app:
+    build: .
+    container_name: my_project-web-app
+    ports:
+      - "80:80"
+    depends_on:
+      - database
+    volumes:
+      - ./src:/app/src
+      - ./index.html:/app/index.html
+    environment:
+      - PORT=80
+
+  database:
+    image: mongo:latest
+    container_name: my_project-database
+    ports:
+      - "27018:27017"   # avoid conflicts with other MongoDB
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:

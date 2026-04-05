@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Flipcard Items</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background: #f0f0f0; }
+    h1 { text-align: center; color: #333; }
+
+    .grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .card {
+      width: 200px;
+      height: 150px;
+      perspective: 1000px;
+    }
+
+    .card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.8s;
+      transform-style: preserve-3d;
+    }
+
+    .card:hover .card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .card-front, .card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      padding: 10px;
+    }
+
+    .card-front {
+      background: #fff;
+      color: #333;
+    }
+
+    .card-back {
+      background: #4CAF50;
+      color: white;
+      transform: rotateY(180deg);
+      flex-direction: column;
+    }
+
+    .card-back button {
+      margin-top: 10px;
+      padding: 6px 12px;
+      border: none;
+      background: #fff;
+      color: #4CAF50;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Flipcard Items</h1>
+  <div class="grid" id="items"></div>
+
+  <script>
+    function loadItems() {
+      fetch('/data')
+        .then(res => res.json())
+        .then(items => {
+          const grid = document.getElementById('items');
+          grid.innerHTML = '';
+          items.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+              <div class="card-inner">
+                <div class="card-front">${item.name}</div>
+                <div class="card-back">
+                  <div>Details about ${item.name}</div>
+                  <button onclick="deleteItem('${item._id}')">Delete</button>
+                </div>
+              </div>
+            `;
+            grid.appendChild(card);
+          });
+        });
+    }
+
+    function deleteItem(id) {
+      fetch('/delete/' + id, { method: 'DELETE' })
+        .then(() => loadItems());
+    }
+
+    loadItems();
+  </script>
+</body>
+</html>
