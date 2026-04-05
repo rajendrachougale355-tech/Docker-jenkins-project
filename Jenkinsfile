@@ -24,7 +24,7 @@ pipeline {
 
         stage('Push to Registry') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
+                withCredentials([usernamePassword(credentialsId: 'rajchouugale', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
                     sh """
                     echo $PASS | docker login -u $USER --password-stdin
                     docker tag my_project01:latest yourdockerhub/my_project01:latest
