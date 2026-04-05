@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/your-username/my_project01.git'
+                git 'https://github.com/rajendrachougale355-tech/Docker-jenkins-project.git    '
             }
         }
 
@@ -27,8 +27,8 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'rajchouugale', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
                     sh """
                     echo $PASS | docker login -u $USER --password-stdin
-                    docker tag my_project01:latest yourdockerhub/my_project01:latest
-                    docker push yourdockerhub/my_project01:latest
+                    docker tag my_project01:latest rajchouugale/my_project01:latest
+                    docker push rajchouugale/my_project01:latest
                     """
                 }
             }
